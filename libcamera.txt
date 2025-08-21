@@ -1,0 +1,32 @@
+libcamera-vid -t 0 --inline --width 640 --height 480 --framerate 30 --codec yuv420 --stdout | \
+v4l2-ctl --set-fmt-video=width=640,height=480,pixelformat=YUYV
+
+
+sudo apt install cheese -y
+
+
+cheese
+
+
+
+
+
+sudo nano /etc/systemd/system/libcamera-v4l2.service
+
+[Unit]
+Description=Libcamera V4L2 Bridge
+After=multi-user.target
+
+[Service]
+ExecStart=/usr/bin/libcamera-vid -t 0 --inline --codec yuv420 --stdout | v4l2-ctl --set-fmt-video=width=640,height=480,pixelformat=YUYV
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
+//Save + exit (CTRL+O, CTRL+X)
+
+sudo systemctl enable libcamera-v4l2.service
+sudo systemctl start libcamera-v4l2.service
+
+
